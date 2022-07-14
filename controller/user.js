@@ -12,7 +12,13 @@ exports.register = async (req, res, next) => {
 		const emailExist = await User.findOne({email})
 
 		if(emailExist){
-			return next(new ErrorResponse("A user with this email already exist", 400))
+			return next(new ErrorResponse("User exists", 400))
+		}
+
+		const usernameExist = await User.findOne({username})
+
+		if(usernameExist){
+			return next(new ErrorResponse("User exists", 400))
 		}
 
 		const user = await User.create({ email, username, country, password, authorization })
