@@ -4,6 +4,14 @@
   "main": "index.js",
   "author": "joseph",
   "license": "MIT",
+  "scripts": {
+    "start": "node index.js",
+    "server": "nodemon index.js"
+  },
+  "engines": {
+    "node": "16.x",
+    "yarn": "1.x"
+  },
   "dependencies": {
     "brcypt": "^1.0.1",
     "cors": "^2.8.5",
