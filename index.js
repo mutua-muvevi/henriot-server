@@ -16,7 +16,7 @@ const errorHandler = require("./middleware/error");
 const logger = require("./utils/logger")
 
 
-// runing/initialization of the imported
+// express initialization
 const app = express()
 
 
@@ -25,10 +25,10 @@ connectDB()
 
 // initializing api limiter
 const limiter = rateLimit({
-	windowMs: 15 * 60 * 1000, // 15 minutes
-	max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
-	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+	windowMs: 15 * 60 * 1000,
+	max: 100,
+	standardHeaders: true,
+	legacyHeaders: false, 
 	message: 'Too many requests from this IP, please try again in 15 minutes!',
 })
 
@@ -40,6 +40,7 @@ app.use(hpp());
 app.use(limiter);
 app.use(mongoSanitize());
 app.use(xss());
+app.use("/api/user", require("./routes/user"));
 
 
 // error middle ware
