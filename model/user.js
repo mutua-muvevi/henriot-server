@@ -25,17 +25,23 @@ const UserSchema = new mongoose.Schema({
 		trim: true,
 		lowercase: true
 	},
+	country: {
+		type: String,
+		minlength: [4, "The minimum length required for country is 4"],
+		maxlength: [56, "The maximum length required for country is 56"],
+		required: [true, "Please provide your country name"],
+		trim: true,
+		lowercase: true
+	},
 	password: {
 		type: String,
 		minlength: [3, "The minimum length required for password is 3"],
 		maxlength: [2500, "The maximum length required for password is 2500"],
 		required: [true, "Password is a required field"]
 	},
-	country: {
+	authorization: {
 		type: String,
-		minlength: [4, "The minimum length required for country is 4"],
-		maxlength: [56, "The maximum length required for country is 56"],
-		required: [true, "Please provide your country name"],
+		enum: ["henriot super admin", "admin", "user"],
 		trim: true,
 		lowercase: true
 	}
