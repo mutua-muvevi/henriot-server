@@ -7,28 +7,38 @@ const bcrypt = require("bcrypt");
 const UserSchema = new mongoose.Schema({
 	email: {
 		type: String,
-		minlength: [3, "The minimum length required for email is 3"],
+		minlength: [5, "The minimum length required for email is 5"],
 		maxlength: [50, "The maximum length required for email is 50"],
-		required: [true, "Firstname is required for email is"],
-		trim: true,
+		required: [true, "Please provide your email"],
+		match: [/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "Please provide a valid email"],
 		unique: true,
-		immutable: true,
-		lowercase: true
+		trim: true,
+		lowercase: true,
+		immutable: true
 	},
 	username: {
 		type: String,
-		minlength: [3, "The minimum length required for username is 3"],
-		maxlength: [50, "The maximum length required for username is 50"],
-		required: [true, "Firstname is required for username is"],
+		minlength: [2, "The minimum character allowed for username is 2"],
+		maxlength: [80, "The maximum character allowed for username is 80"],
+		required: [true, "Please provide your username"],
+		unique: true,
 		trim: true,
-		unique: true
+		lowercase: true
 	},
 	password: {
 		type: String,
 		minlength: [3, "The minimum length required for password is 3"],
 		maxlength: [2500, "The maximum length required for password is 2500"],
-		required: [true, "Password is required for password is"]
+		required: [true, "Password is a required field"]
 	},
+	country: {
+		type: String,
+		minlength: [4, "The minimum length required for country is 4"],
+		maxlength: [56, "The maximum length required for country is 56"],
+		required: [true, "Please provide your country name"],
+		trim: true,
+		lowercase: true
+	}
 }, {
 	timestamps: true,
 	collection: "Users",
@@ -62,7 +72,7 @@ UserSchema.methods.comparePasswords = async function(password){
 // generating json tokens
 UserSchema.methods.genToken = function(){
 	return jwt.sign(
-		{id: this._id, authorization: this.authorization},
+		{ id: this._id, email: this.email },
 		process.env.JWT_SECRET,
 		{ expiresIn: process.env.JWT_EXPIRY }
 	)
