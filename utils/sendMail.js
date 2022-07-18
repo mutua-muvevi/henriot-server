@@ -1,5 +1,6 @@
 const nodemailer = require("nodemailer");
 const logger = require("./logger");
+const handlebars = require("nodemailer-express-handlebars");
 
 const sendEmail = (options) => {
 
@@ -12,12 +13,18 @@ const sendEmail = (options) => {
 		}
 	})
 
+	transporter.use("compile", handlebars({
+		viewEngine: "express-handlebars",
+		viewPath: "../views/"
+	}))
+
 	// mail options
 	const mailOptions = {
 		from: process.env.EMAIL_FROM,
 		to: options.to,
 		subject: options.subject,
-		html: options.html
+		html: options.html,
+		template: "index"
 	}
 
 	transporter.sendMail(mailOptions, (error, info) => {

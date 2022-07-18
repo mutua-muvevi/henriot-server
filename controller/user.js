@@ -23,6 +23,21 @@ exports.register = async (req, res, next) => {
 
 		const user = await User.create({ email, username, country, password, authorization })
 
+		const message = `
+			Dear applicant you have registered succesfully
+		`
+
+		try {
+			sendEmail({
+				to: user.email,
+				subject: "Account Verification",
+				html: message
+			})
+
+		} catch (error) {
+			next(error)
+		}
+
 		sendToken(user, 201, res)
 
 	} catch (error) {
