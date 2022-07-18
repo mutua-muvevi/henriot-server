@@ -13,7 +13,8 @@ const winston = require("winston")
 // constom modules import
 const connectDB = require("./config/database");
 const errorHandler = require("./middleware/error");
-const logger = require("./utils/logger")
+const logger = require("./utils/logger");
+// const handlebar = require("express-handlebars");
 
 
 // express initialization
@@ -31,6 +32,10 @@ const limiter = rateLimit({
 	legacyHeaders: false, 
 	message: 'Too many requests from this IP, please try again in 15 minutes!',
 })
+
+// app.engine("handlebars", handlebar({ defaultLayout: "main" }) )
+//Sets our app to use the handlebars engine
+app.set('view engine', 'handlebars');
 
 // express middlewares
 app.use(express.json());

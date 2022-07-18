@@ -13,9 +13,10 @@ const sendEmail = (options) => {
 		}
 	})
 
+	// for using express handlebars
 	transporter.use("compile", handlebars({
 		viewEngine: "express-handlebars",
-		viewPath: "../views/"
+		viewPath: "../views"
 	}))
 
 	// mail options
