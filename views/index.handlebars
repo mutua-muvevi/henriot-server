@@ -4,8 +4,37 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<title>Express handlebar</title>
+
+		<style>
+
+			h1{
+				color: red;
+			}
+			#section{
+				background-color: grey;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				width: 100%
+			}
+
+			#logo{
+				min-width: 200px;
+			}
+		</style>
 	</head>
 	<body>
-		<h1>Verification Email fro handlebar</h1>
+		<div id="section">
+			<img
+				src="https://res.cloudinary.com/dqweh6zte/image/upload/v1658133237/henriot/logo/henriot_logo_mefxsi.png"
+				alt="henriot logo"
+				id="logo"
+				/>
+			<h1>
+				Account verification
+			</h1>
+			{{{body}}}
+		</div>
 	</body>
 </html>
