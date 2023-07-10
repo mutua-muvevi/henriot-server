@@ -1,0 +1,4 @@
+This is a started template file that will be reused
+It has a user routes
+It has database activity
+When pushing it please add config.env to .gitignore
