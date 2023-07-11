@@ -5,7 +5,7 @@ const logger = require("../utils/logger");
 const invalidJWT = "Invalid User"
 
 const userPopulation = [
-	{ path: "notification", }
+	{ path: "notification", strictPopulate: false }
 
 ]
 

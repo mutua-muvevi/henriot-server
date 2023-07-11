@@ -190,7 +190,12 @@ const UserSchema = new Schema({
 		trim: true,
 		required: [true, "Your email verification is required"]
 	},
-	
+	notification: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Notification'
+		}
+	],
 	language:{
 		type: String,
 		enum: {
