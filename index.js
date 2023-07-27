@@ -13,13 +13,14 @@ connectDB();
 const app = express();
 
 //imported middleware
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
 
 //custom middleware
 app.use("/api/user", require("./routes/user"));
 app.use("/api/notification", require("./routes/notification"));
+app.use("/api/contact", require("./routes/contact"));
 
 //error middleware
 app.use(errorHandler);
