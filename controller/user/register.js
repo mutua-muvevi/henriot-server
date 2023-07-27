@@ -60,7 +60,7 @@ exports.register = async (req, res, next) => {
 		if (!password) {
 			return next(new ErrorResponse("Password is required", 400));
 		}
-console.log(req.body)
+		
 		// user with exact email
 		const emailExists = await User.findOne({ email });
 
