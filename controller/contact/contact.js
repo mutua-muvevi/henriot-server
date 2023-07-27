@@ -20,18 +20,17 @@ exports.contactMessage = async (req, res, next) => {
 
 		const emailHTML = `
 				<h1>Contact Message</h1>
-				<h2>From: ${fullname}</h2>
+				<h2>From: ${firstname} ${lastname}</h2>
 				<p><strong>Email:</strong> ${email}</p>
-				${telephone ? `<p><strong>Telephone:</strong> ${telephone}</p>` : ""}
-				<p><strong>Message:</strong></p>
-				<p>${message}</p>
+				<p><strong>Address:</strong> ${address}</p>
+				<p><strong>Description:</strong> ${description}</p>
 			`;
 
 		//sending the email
 		const emailData = {
 			to: "info@afrigorithm.com",
 			from: process.env.SENDMAILAPIFROM,
-			subject: `Contact Message from : ${fullname}`,
+			subject: `Contact Message from : ${firstname}`,
 			html: emailHTML,
 		};
 
@@ -39,7 +38,7 @@ exports.contactMessage = async (req, res, next) => {
 
 		res.status(200).json({
 			success: true,
-			data: response,
+			// data: response,
 			message: "Message sent successfully"
 		})
 
