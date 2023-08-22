@@ -23,6 +23,7 @@ app.use("/api/notification", require("./routes/notification"));
 app.use("/api/contact", require("./routes/contact"));
 app.use("/api/contact", require("./routes/contact"));
 app.use("/api/email", require("./routes/email"));
+app.use("/api/assets", require("./routes/assets"));
 
 //error middleware
 app.use(errorHandler);
