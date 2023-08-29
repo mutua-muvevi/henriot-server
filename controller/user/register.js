@@ -21,7 +21,6 @@ exports.register = async (req, res, next) => {
 		email_address,
 		phone_number,
 		street_address,
-		unit,
 		city,
 		state,
 		postal_code,
@@ -69,11 +68,17 @@ exports.register = async (req, res, next) => {
 			return next(new ErrorResponse("Family name is required", 400));
 		}
 
+		//find if user exists
+		const userExists = await User.findOne({email: email_address})
+
+		if(userExists){
+			return next(new ErrorResponse("User with this email already exists", 400))
+		}
+
 		const contactData = {
 			email_address,
 			phone_number,
 			street_address,
-			unit,
 			city,
 			state,
 			postal_code,
@@ -113,18 +118,14 @@ exports.register = async (req, res, next) => {
 			disclosures: disclosuresData,
 			agreements,
 			trusted_contact,
-			documents
+			// documents
 		};
 
-		let newAlpakaUser
 		console.log("The context is ", context)
 		console.log("Req body ", req.body)
 		console.log("Req restructured data ", restructuredData)
-		console.log("Req disclosures context ", restructuredData.disclosures.context)
-		// return res.json({
-		// 	data: restructuredData,
-		// 	success: true
-		// })
+
+		let newAlpakaUser
 
 		try {
 			newAlpakaUser = await axios({
@@ -138,140 +139,50 @@ exports.register = async (req, res, next) => {
 			})
 			
 		} catch (error) {
-			console.log("Restuctured data", restructuredData)
-			next(new ErrorResponse(`Caught API Post ERROR : ${error}`))
+			console.log("Alpaka Axios Error Here", `${JSON.stringify(error)}`)
+			return next(new ErrorResponse(`Caught API Post ERROR : ${error}`))
 		}
+
+		//generte the salt and hash
+		const saltHash = generatePassword(password)
+
+		const salt = saltHash.salt
+		const hash = saltHash.hash
+
+
+		//saving the user
+		const user = new User({
+			email: email_address,
+			phone_number,
+			street_address,
+			city,
+			state,
+			postal_code,
+			country,
+			
+			identity: identityData,
+			trusted_contact,
+
+			salt, hash
+		})
+
+		if(!user){
+			return next(new ErrorResponse("Something went wrong while creating user", 500))
+		}
+
+		await user.save()
+
+		//issuing the token
+		const token = issueJWT(user)
 		
 		res.status(201).json({
 			success: true,
-			data: req.body,
-			restructured: restructuredData,
-			user: newAlpakaUser
+			data: user,
+			token
 		});
-
-
-
-
-
-
-
-
-
 
 	} catch (error) {
 		logger.error(`Caught user register error : ${JSON.stringify(error)}`);
 		next(error);
 	}
 };
-
-		
-				//check for unavailability
-				// if (!email) {
-				// 	return next(new ErrorResponse("Email is required", 400));
-				// }
-				// if (!firstname) {
-				// 	return next(new ErrorResponse("Firstname is required", 400));
-				// }
-				// if (!lastname) {
-				// 	return next(new ErrorResponse("Lastname is required", 400));
-				// }
-				// if (!phoneNumber) {
-				// 	return next(new ErrorResponse("Phone number is required", 400));
-				// }
-				// if (!introducerCode) {
-				// 	return next(new ErrorResponse("Introducer code is required", 400));
-				// }
-				// if (!password) {
-				// 	return next(new ErrorResponse("Password is required", 400));
-				// }
-		
-				// // user with exact email
-				// const emailExists = await User.findOne({ email });
-		
-				// if (emailExists) {
-				// 	return next(new ErrorResponse("User exists", 400));
-				// }
-		
-				// return res.status(201).json({
-				// 	success: true,
-				// 	data: req.body,
-				// });
-		
-				// //checking the perfomance time
-				// const start = performance.now();
-		
-				// const id = { _id: new mongoose.Types.ObjectId() };
-		
-				// //password generation
-				// const saltHash = generatePassword(password);
-		
-				// const salt = saltHash.salt;
-				// const hash = saltHash.hash;
-		
-				// const newUser = new User({
-				// 	id,
-				// 	investorType,
-				// 	email,
-				// 	firstname,
-				// 	lastname,
-				// 	phoneNumber,
-				// 	introducerCode,
-				// 	street,
-				// 	city,
-				// 	state,
-				// 	postcode,
-				// 	dateOfBirth,
-				// 	passportNumber,
-				// 	annualIncome,
-				// 	occupation,
-				// 	valueOfAsset,
-				// 	consent,
-				// 	issuingCountry,
-				// 	identificationType,
-				// 	phoneVerification,
-				// 	emailVerification,
-				// 	salt,
-				// 	hash,
-				// });
-		
-				// if (!newUser) {
-				// 	return next(new ErrorResponse(error500, 500));
-				// }
-		
-				// await newUser.save();
-		
-				// const token = issueJWT(newUser);
-		
-				// //notification
-				// const notificationTitle = `New Account Created`;
-				// const notificationType = "create";
-				// const category = "user";
-				// const subCategory = "account";
-				// const isRead = false;
-		
-				// const notification = await Notification.create({
-				// 	title: notificationTitle,
-				// 	type: notificationType,
-				// 	category,
-				// 	subCategory,
-				// 	isRead,
-				// 	createdBy: newUser._id,
-				// });
-		
-				// if (!notification) {
-				// 	logger.error(
-				// 		`Notification Error: Something went wrong while creating client create notification`
-				// 	);
-				// 	return next(new ErrorResponse(error500, 500));
-				// }
-		
-				// const end = performance.now();
-		
-				// const timeTaken = end - start;
-		
-				// res.status(201).json({
-				// 	success: true,
-				// 	token,
-				// 	message,
-				// 	timeTaken,
-				// });
