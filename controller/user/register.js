@@ -2,14 +2,14 @@ const mongoose = require("mongoose");
 
 const ErrorResponse = require("../../utils/errorResponse");
 const User = require("../../model/user/user");
-const sendEmail = require("../../utils/sendMail");
 const cloudinary = require("../../utils/cloudinary");
 const logger = require("../../utils/logger");
 
 const { generatePassword } = require("../../middleware/password");
 const { issueJWT } = require("../../middleware/token");
 const Notification = require("../../model/notification/notification");
-const axios = require("axios")
+const axios = require("axios");
+const SendEmail = require("../../utils/sendMail");
 
 //register
 //register errors
@@ -175,6 +175,12 @@ exports.register = async (req, res, next) => {
 		//issuing the token
 		const token = issueJWT(user)
 		
+		//sending email to henriot admin
+		// const sendRegEmail = SendEmail({
+		// 	to: "",
+		// 	subject: "New user has registered"
+		// })
+
 		res.status(201).json({
 			success: true,
 			data: user,

@@ -3,6 +3,6 @@ const router = express.Router();
 
 const { fetchAssets } = require("../controller/assets/fetch");
 
-router.route("/all").get(fetchAssets)
+router.route("/fetch/all").get(fetchAssets)
 
 module.exports = router
