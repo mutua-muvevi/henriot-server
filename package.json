@@ -23,7 +23,8 @@
   },
   "scripts": {
     "start": "node index.js",
-    "server": "nodemon index.js"
+    "server": "nodemon index.js",
+    "testFetchAssets": "mocha ./controller/assets/fetch/fetch.test.js"
   },
   "devDependencies": {
     "chai": "^4.3.7",
