@@ -6,7 +6,7 @@ exports.fetchAssets = async (req, res, next) => {
 	try {
 		const assets = await axios({
 			method: "get",
-			url: `${process.env.ALPAKA_API}/v1/accounts`,
+			url: `${process.env.ALPAKA_API}/v1/assets`,
 			auth: {
 				username: process.env.ALPAKA_KEY,
 				password: process.env.ALPAKA_SECRET,
