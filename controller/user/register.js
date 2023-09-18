@@ -139,8 +139,8 @@ exports.register = async (req, res, next) => {
 			})
 			
 		} catch (error) {
-			console.log("Alpaka Axios Error Here", `${JSON.stringify(error)}`)
-			return next(new ErrorResponse(`Caught API Post ERROR : ${error}`))
+			console.log("Alpaka Axios Error Here", `${error.response}`)
+			return next(new ErrorResponse(`Caught API Post ERROR : ${error.response}`))
 		}
 
 		//generte the salt and hash
