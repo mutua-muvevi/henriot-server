@@ -20,6 +20,7 @@ exports.getMe = async ( req, res, next ) => {
 		const userID = jwt.sub
 		
 		
+		
 		try {
 			const start = performance.now()
 
