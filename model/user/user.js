@@ -102,6 +102,13 @@ const UserSchema = new Schema({
 		}
 	],
 
+	watchlist: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "WatchList"
+		}
+	],
+
 
 	hash: String,
 	salt: String,
