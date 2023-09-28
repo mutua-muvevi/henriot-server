@@ -21,9 +21,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/user", require("./routes/user"));
 app.use("/api/notification", require("./routes/notification"));
 app.use("/api/contact", require("./routes/contact"));
-app.use("/api/contact", require("./routes/contact"));
 app.use("/api/email", require("./routes/email"));
 app.use("/api/assets", require("./routes/assets"));
+
+app.use("/api/order", require("./routes/order"));
 
 //error middleware
 app.use(errorHandler);

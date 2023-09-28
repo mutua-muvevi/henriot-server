@@ -95,6 +95,13 @@ const UserSchema = new Schema({
 		default:"english"
 	},
 
+	orders: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Order"
+		}
+	],
+
 
 	hash: String,
 	salt: String,

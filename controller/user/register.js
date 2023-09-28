@@ -69,10 +69,12 @@ exports.register = async (req, res, next) => {
 		}
 
 		//find if user exists
-		const userExists = await User.findOne({email: email_address})
+		const userExists = await User.findOne({ email: email_address });
 
-		if(userExists){
-			return next(new ErrorResponse("User with this email already exists", 400))
+		if (userExists) {
+			return next(
+				new ErrorResponse("User with this email already exists", 400)
+			);
 		}
 
 		const contactData = {
@@ -121,37 +123,41 @@ exports.register = async (req, res, next) => {
 			// documents
 		};
 
-		console.log("The context is ", context)
-		console.log("Req body ", req.body)
-		console.log("Req restructured data ", restructuredData)
+		console.log("The context is ", context);
+		console.log("Req body ", req.body);
+		console.log("Req restructured data ", restructuredData);
 
-		let newAlpakaUser
+		let newAlpacaUser;
 
 		try {
-			newAlpakaUser = await axios({
+			newAlpacaUser = await axios({
 				method: "post",
 				url: `${process.env.ALPAKA_API}/v1/accounts`,
 				data: restructuredData,
 				auth: {
 					username: process.env.ALPAKA_KEY,
 					password: process.env.ALPAKA_SECRET,
-				  },
-			})
-			
+				},
+			});
 		} catch (error) {
-			console.log("Alpaka Axios Error Here", `${error.response}`)
-			return next(new ErrorResponse(`Caught API Post ERROR : ${error.response}`))
+			console.log("Alpaca Axios Error Here", `${error.response}`);
+			logger.error(`Alpaca register error, ${error.response}`);
+			return next(
+				new ErrorResponse(
+					`Alpaka Registration Error : ${JSON.stringify(error.response)}`,
+					500
+				)
+			);
 		}
 
 		//generte the salt and hash
-		const saltHash = generatePassword(password)
+		const saltHash = generatePassword(password);
 
-		const salt = saltHash.salt
-		const hash = saltHash.hash
+		const salt = saltHash.salt;
+		const hash = saltHash.hash;
 
-		//get the acount ID from alpaka
-		const { account_id } = newAlpakaUser
-
+		//get the acount ID from alpaca
+		const { account_id } = newAlpacaUser;
 
 		//saving the user
 		const user = new User({
@@ -163,22 +169,28 @@ exports.register = async (req, res, next) => {
 			state,
 			postal_code,
 			country,
-			
+
 			identity: identityData,
 			trusted_contact,
 
-			salt, hash
-		})
+			salt,
+			hash,
+		});
 
-		if(!user){
-			return next(new ErrorResponse("Something went wrong while creating user", 500))
+		if (!user) {
+			return next(
+				new ErrorResponse(
+					"Something went wrong while creating user",
+					500
+				)
+			);
 		}
 
-		await user.save()
+		await user.save();
 
 		//issuing the token
-		const token = issueJWT(user)
-		
+		const token = issueJWT(user);
+
 		//sending email to henriot admin
 		// const sendRegEmail = SendEmail({
 		// 	to: "",
@@ -188,9 +200,8 @@ exports.register = async (req, res, next) => {
 		res.status(201).json({
 			success: true,
 			data: user,
-			token
+			token,
 		});
-
 	} catch (error) {
 		logger.error(`Caught user register error : ${JSON.stringify(error)}`);
 		next(error);
