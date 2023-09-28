@@ -14,7 +14,7 @@ const WatchList = require("../../model/watchlist/watchlist");
 // return message to client
 
 //delete watchlist controller
-exports.deleteWatchListItem = async (req, res, next) => {
+exports.deleteWatchList = async (req, res, next) => {
 	const { userID, accountID, watchlistID } = req.params;
 
 	try {
@@ -104,7 +104,7 @@ exports.deleteWatchListItem = async (req, res, next) => {
 
 
 //delete symbol from watchlist
-exports.deleteWatchListItem = async (req, res, next) => {
+exports.deleteSymbolFromWatchList = async (req, res, next) => {
 	const { userID, accountID, watchlistID, symbol } = req.params;
 
 	try {
