@@ -8,18 +8,18 @@ const WatchList = require("../../model/watchlist/watchlist");
 //check for required fields
 //check for account and user ID
 //check the user
-//check for the watchlistID
+//check for the watchlistItemID
 //send the update to alpaca
 //edit the watchlist on our database after successfull alpaca edit watchlist
 //send results to client
 
-//edit controller
-exports.editWatchListItem = async (req, res, next) => {
-	const { name, symbols, userID, accountID } = req.body;
+//add assets to watchlist controller
+exports.addAssetsToWatchList = async (req, res, next) => {
+    const { name, userID, accountID } = req.body;
 	const { watchlistItemID } = req.params;
 
-	try {
-		//check for required fields
+    try {
+        //check for required fields
 		if (!symbols || symbols.length < 1) {
 			return next(new ErrorResponse("Symbols is required"));
 		}
@@ -59,13 +59,13 @@ exports.editWatchListItem = async (req, res, next) => {
 			return next(new ErrorResponse("Watchlist item not found", 404))
 		}
 
-		let alpakaWatchListItem = null
+        const alpakaAddAssetToWatchList = null
 
-		try {
-			alpakaWatchListItem = await axios({
-				method: "put",
+        try {
+			alpakaAddAssetToWatchList = await axios({
+				method: "post",
 				url: `${process.env.ALPAKA_API}/v1/trading/accounts/${accountID}/watchlists/${watchlistItemID}`,
-				data: {name, symbols},
+				data: {name},
 				auth: {
 					username: process.env.ALPAKA_KEY,
 					password: process.env.ALPAKA_SECRET,
@@ -73,7 +73,7 @@ exports.editWatchListItem = async (req, res, next) => {
 			});
 		} catch (error) {
 			console.log("Alpaca Axios Error Here", `${error.response}`);
-			logger.error(`Alpaca edit watchlistItem error, ${error.response}`);
+			logger.error(`Alpaca add assets to watchlist error, ${error.response}`);
 			return next(
 				new ErrorResponse(
 					`Alpaka edit Order Error : ${JSON.stringify(
@@ -84,18 +84,11 @@ exports.editWatchListItem = async (req, res, next) => {
 			);
 		}
 
-		if (!alpakaWatchListItem || alpakaWatchListItem === null) {
+		if (!alpakaAddAssetToWatchList || alpakaAddAssetToWatchList === null) {
 			return next(
-				new ErrorResponse("Alpaka post watchlistItem cannot be null", 400)
+				new ErrorResponse("Alpaka add assets to watchlist cannot be null", 400)
 			);
 		}
-
-		//updating the watchlistItem to our database
-		if(name) watchlistItem.name = name
-		if(symbols) watchlistItem.symbols = symbols
-
-		//saving the watchlistItem
-		await watchlistItem.save()
 
 		//sending the result
 		res.status(200).json({
@@ -105,8 +98,8 @@ exports.editWatchListItem = async (req, res, next) => {
 		})
 
 
-	} catch (error) {
-		logger.error(`Caught edit watchlist item error : ${JSON.stringify(error)}`);
+    } catch (error) {
+        logger.error(`Caught add assets to watchlist error : ${JSON.stringify(error)}`);
 		next(error);
-	}
-};
+    }
+}
