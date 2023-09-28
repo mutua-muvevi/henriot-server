@@ -11,7 +11,7 @@ const WatchList = require("../../model/watchlist/watchlist");
 //save the watchlist to our database
 // send result to client
 exports.newWatchlistItem = async (req, res, next) => {
-	const { name, symbols, userID, accountID } = req.params;
+	const { name, symbols, userID, accountID } = req.body;
 
 	try {
 		//check for required fields
@@ -19,8 +19,8 @@ exports.newWatchlistItem = async (req, res, next) => {
 			return next(new ErrorResponse("Symbols is required"));
 		}
 
-		if (!qty) {
-			return next(new ErrorResponse("Quantity is required"));
+		if (!name) {
+			return next(new ErrorResponse("Watchlist name is required"));
 		}
 
 		if (!userID || !mongoose.Types.ObjectId.isValid(userID)) {
