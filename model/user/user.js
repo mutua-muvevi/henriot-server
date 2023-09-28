@@ -1,6 +1,5 @@
 //package imports
 const mongoose = require("mongoose");
-const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
 //initialization
@@ -11,22 +10,15 @@ const MainSchemaOptions = {
 	timestamps: true,
 	autoIndex: false,
 	collection: "User",
-	optimisticConcurrency: true, //enables updating docs doesnt change in between two methods
-	collation: {
-		//collation is language specific
-		locale: "en_US",
-		strength: 1
-	},
-	timeseries: {
-		timeField: 'timestamp',
-		metaField: 'metadata',
-		granularity: 'hours'
-	},
+	optimisticConcurrency: true,
 }
 
-//WILL CONVERT THIS TO SUBDOCUMENT TYPE
+
 //main schema
 const UserSchema = new Schema({
+	account_id: {
+		type: String,
+	},
 	email: {
 		type: String,
 		match: [/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "Your email format should be __@_.__, instead got {VALUE}"],

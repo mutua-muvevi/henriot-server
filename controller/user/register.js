@@ -149,10 +149,14 @@ exports.register = async (req, res, next) => {
 		const salt = saltHash.salt
 		const hash = saltHash.hash
 
+		//get the acount ID from alpaka
+		const { account_id } = newAlpakaUser
+
 
 		//saving the user
 		const user = new User({
 			email: email_address,
+			account_id,
 			phone_number,
 			street_address,
 			city,
