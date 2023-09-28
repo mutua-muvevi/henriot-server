@@ -25,6 +25,7 @@ app.use("/api/email", require("./routes/email"));
 app.use("/api/assets", require("./routes/assets"));
 
 app.use("/api/order", require("./routes/order"));
+app.use("/api/watchlist", require("./routes/watchlist"));
 
 //error middleware
 app.use(errorHandler);
