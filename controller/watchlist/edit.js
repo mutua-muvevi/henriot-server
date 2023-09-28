@@ -76,7 +76,7 @@ exports.editWatchListItem = async (req, res, next) => {
 			logger.error(`Alpaca edit watchlistItem error, ${error.response}`);
 			return next(
 				new ErrorResponse(
-					`Alpaka edit Order Error : ${JSON.stringify(
+					`Alpaka edit Watchlist Error : ${JSON.stringify(
 						error.response
 					)}`,
 					500

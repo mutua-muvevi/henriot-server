@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
+const { authMiddleware } = require("../middleware/auth");
 const { newWatchlistItem } = require("../controller/watchlist/new");
 // const { editOrder } = require("../controller/watchlist/edit");
 // const { authMiddleware } = require("../middleware/auth");
