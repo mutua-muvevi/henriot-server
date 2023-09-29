@@ -28,6 +28,7 @@ app.use("/api/order", require("./routes/order"));
 app.use("/api/watchlist", require("./routes/watchlist"));
 app.use("/api/position", require("./routes/position"));
 app.use("/api/portfolio", require("./routes/portfolio"));
+app.use("/api/activities", require("./routes/activities"));
 
 //error middleware
 app.use(errorHandler);
