@@ -49,9 +49,7 @@ exports.fetchAllIndividualWistList = async (req, res, next) => {
 			data: watchlist,
 		});
 	} catch (error) {
-		logger.error(
-			`Caught fetch all watchlist error : ${JSON.stringify(error)}`
-		);
+		logger.error( `Caught fetch all watchlist error : ${JSON.stringify(error)}` );
 		next(error);
 	}
 };
