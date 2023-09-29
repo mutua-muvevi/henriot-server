@@ -26,6 +26,7 @@ app.use("/api/assets", require("./routes/assets"));
 
 app.use("/api/order", require("./routes/order"));
 app.use("/api/watchlist", require("./routes/watchlist"));
+app.use("/api/position", require("./routes/position"));
 
 //error middleware
 app.use(errorHandler);
