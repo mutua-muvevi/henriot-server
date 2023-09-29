@@ -6,9 +6,10 @@ const { newWatchlistItem } = require("../controller/watchlist/new");
 const { deleteWatchList, deleteSymbolFromWatchList } = require("../controller/watchlist/delete");
 const { fetchAllWatchList, fetchAllIndividualWistList } = require("../controller/watchlist/fetch");
 const { editWatchListItem } = require("../controller/watchlist/edit");
-
+const { addAssetsToWatchList } = require("../controller/watchlist/addassets");
 
 router.route("/new").post(authMiddleware, newWatchlistItem);
+router.route("/add/assets").put(authMiddleware, addAssetsToWatchList)
 router.route("/edit/:watchlistItemID").put(authMiddleware, editWatchListItem);
 
 router.route("/fetch/all/:userID").get(authMiddleware, fetchAllWatchList);
