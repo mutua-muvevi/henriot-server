@@ -14,7 +14,7 @@ router.route("/edit/:watchlistItemID").put(authMiddleware, editWatchListItem);
 router.route("/fetch/all/:userID").get(authMiddleware, fetchAllWatchList);
 router.route("/fetch/all/:userID/:accountID").get(authMiddleware, fetchAllIndividualWistList);
 
-router.route("/delete/single/:accountID/:userID/:watchlistID").delete(authMiddleware, deleteWatchList);
+router.route("/delete/all/:accountID/:userID/:watchlistID").delete(authMiddleware, deleteWatchList);
 router.route("/delete/single/:accountID/:userID/:watchlistID/:symbol").delete(authMiddleware, deleteSymbolFromWatchList);
 
 module.exports = router
