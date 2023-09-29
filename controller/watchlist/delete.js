@@ -11,7 +11,7 @@ const WatchList = require("../../model/watchlist/watchlist");
 //send delete to alpaka
 //delete from database
 //remove from user
-// return message to client
+//return message to client
 
 //delete watchlist controller
 exports.deleteWatchList = async (req, res, next) => {
