@@ -13,7 +13,7 @@ router.route("/edit/:orderID").put(authMiddleware, editOrder);
 router.route("/fetch/all/:userID").get(authMiddleware, fetchAllOrders);
 router.route("/fetch/all/:userID/:accountID").get(authMiddleware, fetchAllIndividualOrders);
 
-router.route("/delete/all").delete(authMiddleware, deleteAllOrders);
-router.route("/delete/single/:orderID").delete(authMiddleware, deleteSingleOrder);
+router.route("/delete/all/:accountID/:userID").delete(authMiddleware, deleteAllOrders);
+router.route("/delete/single/:accountID/:userID/:orderID").delete(authMiddleware, deleteSingleOrder);
 
 module.exports = router
