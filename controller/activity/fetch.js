@@ -10,7 +10,7 @@ const User = require("../../model/user/user");
 
 //fetch all activities
 exports.fetchAccountActivities = async (req, res, next) => {
-	const { userID } = req.params;
+	const { userID, accountID } = req.params;
 
 	try {
 		// user ID
@@ -18,11 +18,26 @@ exports.fetchAccountActivities = async (req, res, next) => {
 			return next(new ErrorResponse("Invalid user"), 400);
 		}
 
+		//account id
+		if (!accountID) {
+			return next(new ErrorResponse("Invalid account"));
+		}
+
 		//check the user
 		const user = await User.findById(userID);
 
 		if (!user) {
 			return next(new ErrorResponse("Invalid User", 400));
+		}
+
+		//validating the account
+		if(user.account_id !== accountID) {
+			return next(new ErrorResponse("Invalid account", 400));
+		}
+		
+		//validating the account
+		if(user.account_id !== accountID) {
+			return next(new ErrorResponse("Invalid account", 400));
 		}
 
 		//fetching activities from alpaka
@@ -70,7 +85,7 @@ exports.fetchAccountActivities = async (req, res, next) => {
 
 //fetch activities by type
 exports.fetchActivitiesByType = async (req, res, next) => {
-	const { userID, activityType } = req.params
+	const { userID, accountID, activityType } = req.params
 
 	try {
 		//user ID
@@ -80,6 +95,11 @@ exports.fetchActivitiesByType = async (req, res, next) => {
 
 		if (!activityType) {
 			return next(new ErrorResponse("Aactivity type is required"), 400);
+		}
+
+		//account id
+		if (!accountID) {
+			return next(new ErrorResponse("Invalid account"));
 		}
 
 		//check the user
