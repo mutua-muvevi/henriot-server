@@ -113,6 +113,8 @@ exports.newOrder = async (req, res, next) => {
 		await order.save();
 
 		//push the order to user
+		user.orders.push(order);
+		await user.save();
 
 
 		// sending the result to client
